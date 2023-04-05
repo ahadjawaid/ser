@@ -12,6 +12,10 @@ def load_audio(path):
 def mel_transform(y):
     return melspectrogram(y=y)
 
+@Transform
+def db_transform(mel):
+    return librosa.power_to_db(mel) 
+
 def save_mel(mel, save_path):
     plt.imsave(save_path, arr=mel, origin="lower")
 
@@ -26,7 +30,6 @@ def create_png(path):
         mel = mel_pipeline(path)
         save_mel(mel, png_path)
 
-db_transform = Transform(librosa.power_to_db)  
 mel_pipeline = Pipeline([load_audio, mel_transform, db_transform])
 get_audio_files = FileGetter(extensions=".wav")
 
